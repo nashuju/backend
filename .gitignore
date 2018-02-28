@@ -1,0 +1,8 @@
+##ignore this file##
+backend/jcml/settings.py
+backend/ao/os/local.py
+backend/ao/os/weeklocal.py
+backend/ao/os/shell.py
+*.csv
+*.pyc
+.idea

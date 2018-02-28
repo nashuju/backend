@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello jcml</title>
+    <script src="{% static "js/echarts.min.js" %}"></script>
+</head>
+<body>
+<h1>hello jcml</h1>
+<div id="tf" class="tf" style="width: 600px;height:400px;"></div>
+<div id="bf" class="bf" style="width: 600px;height:400px;"></div>
+<style type="text/css">
+.download {
+    top: 150px;
+    left: 600px;
+    position: absolute;
+}
+</style>
+<div class="download">
+
+    <a href="{% static "一周的图数据.csv" %}">表红点坐标表格</a>
+     <div>
+        <a href="{% static "最近一周按次数排序.csv" %}">最近一周内按次数排序</a>
+        <a href="{% static "最近一周按频率排序.csv" %}" >最近一周内按频率排序</a>
+    </div>
+    <div>
+        <a href="{% static "最近一天按板块集访问次数排序.csv" %}">最近一天按板块集访问次数排序</a>
+        <a href="{% static "最近一天按用户访问次数排序.csv" %}" >最近一天按用户访问次数排序</a>
+    </div>
+</div>
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('tf'));
+
+        // 指定图表的配置项和数据
+    option = {
+    title: {
+        text: '次数-频率散点图'
+    },
+    tooltip : {
+        trigger: 'axis',
+        showDelay : 0,
+        axisPointer:{
+            show: true,
+            type : 'cross',
+            lineStyle: {
+                type : 'dashed',
+                width : 1
+            }
+        },
+        zlevel: 1
+    },
+    legend: {
+        data:['爬虫','非爬虫']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataZoom : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    xAxis : [
+        {
+            type : 'value',
+            scale:true
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            scale:true
+        }
+    ],
+    series : [
+        {
+            name:'爬虫',
+            type:'scatter',
+            large: true,
+            symbolSize: 3,
+            data: (function () {
+
+                console.log({{ ret.cf2 }});
+                return {{ ret.cf2 }};
+
+            })()
+        },
+        {
+            name:'非爬虫',
+            type:'scatter',
+            large: true,
+            symbolSize: 2,
+            data: (function () {
+                console.log({{ ret.cf1 }});
+                return {{ ret.cf1 }};
+
+            })()
+        },
+    ]
+};
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+     // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('bf'));
+
+        // 指定图表的配置项和数据
+    option = {
+    title: {
+        text: '板块集-频率散点图'
+    },
+    tooltip : {
+        trigger: 'axis',
+        showDelay : 0,
+        axisPointer:{
+            show: true,
+            type : 'cross',
+            lineStyle: {
+                type : 'dashed',
+                width : 1
+            }
+        },
+        zlevel: 1
+    },
+    legend: {
+        data:['爬虫','非爬虫']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataZoom : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    xAxis : [
+        {
+            type : 'value',
+            scale:true
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            scale:true
+        }
+    ],
+    series : [
+        {
+            name:'爬虫',
+            type:'scatter',
+            large: true,
+            symbolSize: 3,
+            data: (function () {
+
+                console.log({{ ret.bf2 }});
+                return {{ ret.bf2 }};
+
+            })()
+        },
+        {
+            name:'非爬虫',
+            type:'scatter',
+            large: true,
+            symbolSize: 2,
+            data: (function () {
+                console.log({{ ret.bf1 }});
+                return {{ ret.bf1 }};
+
+            })()
+        }
+    ]
+};
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+</script>
+
+</body>
+</html>
