@@ -6,3 +6,4 @@ backend/ao/os/shell.py
 *.csv
 *.pyc
 .idea
+.DS_Store
