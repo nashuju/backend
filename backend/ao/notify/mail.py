@@ -47,11 +47,12 @@ class mail:
             return False
 
 if __name__ == '__main__':
-    attachs = [['2017-07-25.txt','/Users/xiaoren/Desktop/实习/7_27/2017-07-25.txt']]
+    #attachs = [['2017-07-25.txt','/Users/xiaoren/Desktop/实习/7_27/2017-07-25.txt']]
+    attachs = []
     # mailto_list=['434835764@qq.com','chenfei@wallstreetcn.com','fengzhihao@wallstreetcn.com']
-    mailto_list = ['freedomichael@163.com']
+    mailto_list = ['freedomichael@163.com','540310916@qq.com']
     mail = mail()
-    if mail.send_mail(mailto_list,"michael","不要再屏蔽我了好吗！！！！！！",attachs):
+    if mail.send_mail(mailto_list,"robot","猜猜我是不是机器人~~",attachs):
         print "发送成功"
     else:
         print "发送失败"
