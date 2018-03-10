@@ -13,6 +13,7 @@ from ml.preprocess.mining import mining
 from ml.preprocess.data_flow import data_flow
 from ml.preprocess.mysql_process_unit import mysql_process_unit
 import datetime
+import enchant
 
 # Create your views here.
 
@@ -35,10 +36,12 @@ def edited_page(request, edited_id):
 
 def add_visit_record(request, user_id, content):
     time_stamp = datetime.datetime.now()
-    models.VisitRecord.objects.create(user_id=user_id,
-                                          bkj_id=content,
-                                          time_stamp=time_stamp,
-                                      )
+    d = enchant.Dict("en_US")
+    if d.check(content):
+        models.VisitRecord.objects.create(user_id=user_id,
+                                              bkj_id=content,
+                                              time_stamp=time_stamp,
+                                          )
     return render(request, 'jc/add_visit_record.html')
 
 
