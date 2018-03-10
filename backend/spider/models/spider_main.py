@@ -40,6 +40,6 @@ class SpiderMain(object):
         print("Work Done!")
 
 if __name__ == "__main__":
-    root_url = "https://baike.baidu.com/item/QQ"
+    root_url = "https://www.zhihu.com/topic/19629320/hot"
     obj_spider = SpiderMain()
     obj_spider.craw(root_url)
