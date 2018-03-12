@@ -14,6 +14,7 @@ from ml.preprocess.data_flow import data_flow
 from ml.preprocess.mysql_process_unit import mysql_process_unit
 import datetime
 import enchant
+from ao.EN2CHS import EN2CHS
 
 # Create your views here.
 
@@ -38,13 +39,15 @@ def add_visit_record(request, user_id, content):
     time_stamp = datetime.datetime.now()
     d = enchant.Dict("en_US")
     if d.check(content):
+        r = EN2CHS(content)
         models.VisitRecord.objects.create(user_id=user_id,
                                               bkj_id=content,
                                               time_stamp=time_stamp,
+                                              reverse_deta = r.basic
                                           )
     return render(request, 'jc/add_visit_record.html')
 
 
-def show_visit_record(request):
-    records = models.VisitRecord.objects.all()
+def show_visit_record(request,user_id):
+    records = models.VisitRecord.objects.filter(user_id=user_id)
     return render(request, 'jc/show_visit_record.html', {'records': records})

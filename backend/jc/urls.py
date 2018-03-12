@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^edited_page/(?P<edited_id>[0-9]+)$', views.edited_page,name='edited_page'),
 #   url(r'^visit/(?P<user_id>[0-9]+)/(?P<bkj_id>[0-9]+)$', views.add_visit_record,name='add_visit_record'),
     url(r'^visit/(?P<user_id>[\s\S]*)/(?P<content>[\s\S]*)$', views.add_visit_record,name='add_visit_record'),
-    url(r'^visit/$', views.show_visit_record,name='show_visit_record'),
+    url(r'^visit/(?P<user_id>[\s\S]*)$', views.show_visit_record,name='show_visit_record'),
 ]
 
