@@ -49,5 +49,5 @@ def add_visit_record(request, user_id, content):
 
 
 def show_visit_record(request,user_id):
-    records = models.VisitRecord.objects.filter(user_id=user_id)
+    records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')
     return render(request, 'jc/show_visit_record.html', {'records': records})
