@@ -39,6 +39,6 @@ class EN2CHS:
             if httpClient:
                 httpClient.close()
 
-t = EN2CHS('good')
+#t = EN2CHS('One problem is that RNNs are not inductive')
 
 pass
