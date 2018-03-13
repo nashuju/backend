@@ -38,25 +38,33 @@ def edited_page(request, edited_id):
 def add_visit_record(request, user_id, content):
     time_stamp = datetime.datetime.now()
     d = enchant.Dict("en_US")
-    if str(content).__contains__(' '):
-        wordlist = str(content).split(' ')
-        if d.check(wordlist[0]) and d.check(wordlist[-1]):
-            r = EN2CHS(content)
-            models.VisitRecord.objects.create(user_id=user_id,
-                                                  bkj_id=content,
-                                                  time_stamp=time_stamp,
-                                                  reverse_deta = r.translation,
-                                                  is_crawler = "s"
-                                              )
-    else:
-        if d.check(content):
-            r = EN2CHS(content)
-            models.VisitRecord.objects.create(user_id=user_id,
-                                                  bkj_id=content,
-                                                  time_stamp=time_stamp,
-                                                  reverse_deta = r.basic,
-                                                  is_crawler = "w"
-                                              )
+    # if str(content).__contains__(' '):
+    #     wordlist = str(content).split(' ')
+    #     if d.check(wordlist[0]) and d.check(wordlist[-1]):
+    #         r = EN2CHS(content)
+    #         models.VisitRecord.objects.create(user_id=user_id,
+    #                                               bkj_id=content,
+    #                                               time_stamp=time_stamp,
+    #                                               reverse_deta = r.translation,
+    #                                               is_crawler = "s"
+    #                                           )
+    # else:
+    #     if d.check(content):
+    #         r = EN2CHS(content)
+    #         models.VisitRecord.objects.create(user_id=user_id,
+    #                                               bkj_id=content,
+    #                                               time_stamp=time_stamp,
+    #                                               reverse_deta = r.basic,
+    #                                               is_crawler = "w"
+    #                                           )
+    if d.check(content):
+        r = EN2CHS(content)
+        models.VisitRecord.objects.create(user_id=user_id,
+                                                      bkj_id=content,
+                                                      time_stamp=time_stamp,
+                                                      reverse_deta = r.basic,
+                                                      is_crawler = "w"
+                                                  )
 
     return render(request, 'jc/add_visit_record.html')
 
