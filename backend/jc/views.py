@@ -15,6 +15,9 @@ from ml.preprocess.mysql_process_unit import mysql_process_unit
 import datetime
 import enchant
 from ao.EN2CHS import EN2CHS
+from django.http import HttpResponse
+import json
+from django.core import serializers
 
 # Create your views here.
 
@@ -65,10 +68,16 @@ def add_visit_record(request, user_id, content):
                                                       reverse_deta = r.basic,
                                                       is_crawler = "w"
                                                   )
-
     return render(request, 'jc/add_visit_record.html')
+
 
 
 def show_visit_record(request,user_id):
     records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')[:10]
-    return render(request, 'jc/show_visit_record.html', {'records': records})
+    return render(request, 'jc/show_visit_record.html', {'records': records,'first':records[0]})
+
+def record_json(request,user_id):
+    records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')[:10]
+    data = serializers.serialize("json", records)
+    return HttpResponse(json.dumps({'records':json.loads(data)[0]}), content_type="application/json")
+
