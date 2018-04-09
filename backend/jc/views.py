@@ -79,7 +79,7 @@ def show_visit_record(request,user_id):
     return render(request, 'jc/show_visit_record.html', {'records': records,'first':records[0]})
 
 def mz(request,user_id):
-    records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')[:20]
+    records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')
     return render(request, 'jc/mz.html', {'records': records,'first':records[0]})
 def record_json(request,user_id):
     records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')[:10]
