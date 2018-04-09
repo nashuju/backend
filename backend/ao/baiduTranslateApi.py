@@ -3,6 +3,7 @@ import requests
 import json
 import langid
 import sys
+import re
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -72,6 +73,9 @@ def FR2ZH(context):
 
 def all2ZH(context):
     c = langid.classify(context)[0]
+    pattern = re.compile('[0-9]+')
+    match = pattern.findall(context)
+    if match : return context,'unknown2zh'
     if c == 'en':
         return EN2ZH(context),'en2zh'
     elif c == 'fr':
