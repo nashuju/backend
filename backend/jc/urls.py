@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^visit/(?P<user_id>[\s\S]*)/(?P<content>[\s\S]*)$', views.add_visit_record,name='add_visit_record'),
     url(r'^show/(?P<user_id>[\s\S]*)$', views.show_visit_record,name='show_visit_record'),
     url(r'^show_json/(?P<user_id>[\s\S]*)$', views.record_json,name='record_json'),
+    url(r'^mz/(?P<user_id>[\s\S]*)$', views.mz,name='mz'),
+
 ]
 

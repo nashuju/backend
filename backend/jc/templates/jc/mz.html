@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>visit record</title>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    萌主的生词表:<br/>
+    {% for record in records %}
+        <a> {{ record.bkj_id }} </a>
+        <a> {{ record.reverse_deta }} </a>
+        <br>
+    {% endfor %}
+</body>
+
+<script language="JavaScript">
+    var  a = "{{ first.bkj_id }}";
+    var  user_id = "{{ first.user_id }}"
+function myrefresh(){
+
+$.getJSON("http://www.nashuju.com:8082/index/show_json/"+ user_id,function(result){
+			if (result.records.fields.bkj_id != a){
+                window.location.reload();
+            };
+		});
+}
+setInterval('myrefresh()',1000); //指定1秒刷新一次
+</script>
+</html>
