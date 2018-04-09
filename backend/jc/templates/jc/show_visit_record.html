@@ -18,6 +18,7 @@
     var  a = "{{ first.bkj_id }}";
     var  user_id = "{{ first.user_id }}"
 function myrefresh(){
+
 $.getJSON("http://www.nashuju.com:8082/index/show_json/"+ user_id,function(result){
 			if (result.records.fields.bkj_id != a){
                 window.location.reload();

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import requests
 import json
-from langdetect import detect
-from langdetect import detect_langs
 import langid
 import sys
 reload(sys)
