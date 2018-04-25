@@ -74,12 +74,12 @@ def FR2ZH(context):
 def all2ZH(context):
     pattern = re.compile('[a-z，A-Z]+')
     match = pattern.findall(context)
-    if match.__len__() != 1 : return context,'unknown2zh'
+    if match.__len__() != 1 : return None,context,'unknown2zh'
     ret = EN2ZH(match[0])
     if langid.classify(ret)[0] == 'zh':
-        return ret,'en2zh'
+        return match[0],ret,'en2zh'
     else:
-        return context,'unknown2zh'
+        return match[0],context,'unknown2zh'
 
 
 # print EN2ZH('liberalise')

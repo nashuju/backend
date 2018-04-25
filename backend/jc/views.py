@@ -19,13 +19,18 @@ import ao.baiduTranslateApi as bdt
 from django.http import HttpResponse
 import json
 from django.core import serializers
+import ao.record_rules as rr
+
 
 # Create your views here.
 
 
 def index(request):
-
-    cf1 = [];cf2 = [];bf1 = [];bf2 = [];output = []
+    cf1 = [];
+    cf2 = [];
+    bf1 = [];
+    bf2 = [];
+    output = []
     ret = {'cf1': cf1, 'cf2': cf2, 'bf1': bf1, 'bf2': bf2}
     return render(request, 'jc/index.html', {'ret': ret})
 
@@ -41,51 +46,41 @@ def edited_page(request, edited_id):
 
 def add_visit_record(request, user_id, content):
     time_stamp = datetime.datetime.now()
-    # if str(content).__contains__(' '):
-    #     wordlist = str(content).split(' ')
-    #     if d.check(wordlist[0]) and d.check(wordlist[-1]):
-    #         r = EN2CHS(content)
-    #         models.VisitRecord.objects.create(user_id=user_id,
-    #                                               bkj_id=content,
-    #                                               time_stamp=time_stamp,
-    #                                               reverse_deta = r.translation,
-    #                                               is_crawler = "s"
-    #                                           )
-    # else:
-    #     if d.check(content):
-    #         r = EN2CHS(content)
-    #         models.VisitRecord.objects.create(user_id=user_id,
-    #                                               bkj_id=content,
-    #                                               time_stamp=time_stamp,
-    #                                               reverse_deta = r.basic,
-    #                                               is_crawler = "w"
-    #                                           )
     if " " not in content:
-        #r = EN2CHS(content)
-        r ,tp= bdt.all2ZH(content)
-        records = models.VisitRecord.objects.filter(bkj_id=content)
-        if records.__len__() != 0:
-            models.VisitRecord.objects.filter(bkj_id=content).update(visit_freq = str(int(records[0].visit_freq)+1),time_stamp=time_stamp)
-        if tp != "unknown2zh" and r != content and r != "" and records.__len__() == 0:
-            models.VisitRecord.objects.create(user_id=user_id,
-                                                          bkj_id=content,
-                                                          time_stamp=time_stamp,
-                                                          reverse_deta = r,
-                                                          is_crawler = tp
-                                                      )
+        # r = EN2CHS(content)
+        word, add_content = rr.RecordRules(content).en_zh()
+        if add_content != None:
+            content = word
+        w, r, tp = bdt.all2ZH(content)
+        if w != None:
+            records = models.VisitRecord.objects.filter(bkj_id=w)
+            if records.__len__() != 0:
+                models.VisitRecord.objects.filter(bkj_id=w).update(
+                    visit_freq=str(int(records[0].visit_freq) + 1),
+                    time_stamp=time_stamp,
+                    reverse_deta=records[0].reverse_deta + add_content
+                )
+            elif tp != "unknown2zh" and r != content and r != "" and records.__len__() == 0:
+                models.VisitRecord.objects.create(user_id=user_id,
+                                                  bkj_id=w,
+                                                  time_stamp=time_stamp,
+                                                  reverse_deta=r + add_content,
+                                                  is_crawler=tp
+                                                  )
     return render(request, 'jc/add_visit_record.html')
 
 
-
-def show_visit_record(request,user_id):
+def show_visit_record(request, user_id):
     records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')[:20]
-    return render(request, 'jc/show_visit_record.html', {'records': records,'first':records[0]})
+    return render(request, 'jc/show_visit_record.html', {'records': records, 'first': records[0]})
 
-def mz(request,user_id):
+
+def mz(request, user_id):
     records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')
-    return render(request, 'jc/mz.html', {'records': records,'first':records[0]})
-def record_json(request,user_id):
+    return render(request, 'jc/mz.html', {'records': records, 'first': records[0]})
+
+
+def record_json(request, user_id):
     records = models.VisitRecord.objects.filter(user_id=user_id).order_by('-time_stamp')[:10]
     data = serializers.serialize("json", records)
-    return HttpResponse(json.dumps({'records':json.loads(data)[0]}), content_type="application/json")
-
+    return HttpResponse(json.dumps({'records': json.loads(data)[0]}), content_type="application/json")
