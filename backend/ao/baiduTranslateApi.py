@@ -75,7 +75,7 @@ def all2ZH(context):
     pattern = re.compile('[a-z，A-Z]+')
     match = pattern.findall(context)
     c = langid.classify(match[0])[0]
-    if match.__len__() == 0 : return context,'unknown2zh'
+    if match.__len__() != 1 : return context,'unknown2zh'
     if c == 'en':
         ret = EN2ZH(match[0])
         if langid.classify(ret)[0] == 'zh':

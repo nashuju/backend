@@ -64,6 +64,8 @@ def add_visit_record(request, user_id, content):
         #r = EN2CHS(content)
         r ,tp= bdt.all2ZH(content)
         records = models.VisitRecord.objects.filter(bkj_id=content)
+        if records.__len__() != 0:
+            models.VisitRecord.objects.filter(bkj_id=content).update(visit_freq = str(int(records[0].visit_freq)+1),time_stamp=time_stamp)
         if tp != "unknown2zh" and r != content and r != "" and records.__len__() == 0:
             models.VisitRecord.objects.create(user_id=user_id,
                                                           bkj_id=content,
