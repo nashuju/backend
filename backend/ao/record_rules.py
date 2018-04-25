@@ -13,4 +13,4 @@ class RecordRules:
             content = " "+self.seq[self.seq.index('(')+1:self.seq.index(')')]
             return word,content
         else:
-            return self.seq , None
+            return self.seq , ""

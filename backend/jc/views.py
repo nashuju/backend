@@ -49,7 +49,7 @@ def add_visit_record(request, user_id, content):
     if " " not in content:
         # r = EN2CHS(content)
         word, add_content = rr.RecordRules(content).en_zh()
-        if add_content != None:
+        if add_content != "":
             content = word
         w, r, tp = bdt.all2ZH(content)
         if w != None:
@@ -64,7 +64,7 @@ def add_visit_record(request, user_id, content):
                 models.VisitRecord.objects.create(user_id=user_id,
                                                   bkj_id=w,
                                                   time_stamp=time_stamp,
-                                                  reverse_deta=r + add_content,
+                                                  reverse_deta=r+add_content,
                                                   is_crawler=tp
                                                   )
     return render(request, 'jc/add_visit_record.html')
