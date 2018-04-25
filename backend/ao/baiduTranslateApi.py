@@ -72,15 +72,21 @@ def FR2ZH(context):
     return ret
 
 def all2ZH(context):
-    c = langid.classify(context)[0]
-    pattern = re.compile('[0-9]+')
+    pattern = re.compile('[a-z，A-Z]+')
     match = pattern.findall(context)
-    if match : return context,'unknown2zh'
+    c = langid.classify(match[0])[0]
+    if match.__len__() == 0 : return context,'unknown2zh'
     if c == 'en':
-        return EN2ZH(context),'en2zh'
+        ret = EN2ZH(match[0])
+        if langid.classify(ret)[0] == 'zh':
+            return ret,'en2zh'
+        else:
+            return context,'unknown2zh'
     elif c == 'fr':
-        return FR2ZH(context),'fr2zh'
+        ret = FR2ZH(match[0])
+        if langid.classify(ret)[0] == 'zh':
+            return ret,'fr2zh'
+        else:
+            return context,'unknown2zh'
     else:
         return context,'unknown2zh'
-
-
