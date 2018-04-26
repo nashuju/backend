@@ -10,6 +10,7 @@ class RecordRules:
     def en_zh(self):
         if self.seq.find('(')!=-1 and self.seq.find(')')!=-1 and self.seq.index('(')<self.seq.index(')'):
             word = self.seq[:self.seq.index('(')]
+            if " " in word: return self.seq , ""
             content = " "+self.seq[self.seq.index('(')+1:self.seq.index(')')]
             return word,content
         else:

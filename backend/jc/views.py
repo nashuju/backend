@@ -46,27 +46,27 @@ def edited_page(request, edited_id):
 
 def add_visit_record(request, user_id, content):
     time_stamp = datetime.datetime.now()
-    if " " not in content:
+    #if " " not in content:
         # r = EN2CHS(content)
-        word, add_content = rr.RecordRules(content).en_zh()
-        if add_content != "":
-            content = word
-        w, r, tp = bdt.all2ZH(content)
-        if w != None:
-            records = models.VisitRecord.objects.filter(bkj_id=w)
-            if records.__len__() != 0:
-                models.VisitRecord.objects.filter(bkj_id=w).update(
-                    visit_freq=str(int(records[0].visit_freq) + 1),
-                    time_stamp=time_stamp,
-                    reverse_deta=records[0].reverse_deta if add_content in records[0].reverse_deta else records[0].reverse_deta+add_content
-                )
-            elif tp != "unknown2zh" and r != content and r != "" and records.__len__() == 0:
-                models.VisitRecord.objects.create(user_id=user_id,
-                                                  bkj_id=w,
-                                                  time_stamp=time_stamp,
-                                                  reverse_deta=r if add_content in r else r+add_content,
-                                                  is_crawler=tp
-                                                  )
+    word, add_content = rr.RecordRules(content).en_zh()
+    if add_content != "":
+        content = word
+    w, r, tp = bdt.all2ZH(content)
+    if w != None:
+        records = models.VisitRecord.objects.filter(bkj_id=w)
+        if records.__len__() != 0:
+            models.VisitRecord.objects.filter(bkj_id=w).update(
+                visit_freq=str(int(records[0].visit_freq) + 1),
+                time_stamp=time_stamp,
+                reverse_deta=records[0].reverse_deta if add_content in records[0].reverse_deta else records[0].reverse_deta+add_content
+            )
+        elif tp != "unknown2zh" and r != content and r != "" and records.__len__() == 0:
+            models.VisitRecord.objects.create(user_id=user_id,
+                                              bkj_id=w,
+                                              time_stamp=time_stamp,
+                                              reverse_deta=r if add_content in r else r+add_content,
+                                              is_crawler=tp
+                                              )
     return render(request, 'jc/add_visit_record.html')
 
 
