@@ -58,13 +58,13 @@ def add_visit_record(request, user_id, content):
                 models.VisitRecord.objects.filter(bkj_id=w).update(
                     visit_freq=str(int(records[0].visit_freq) + 1),
                     time_stamp=time_stamp,
-                    reverse_deta=records[0].reverse_deta + add_content
+                    reverse_deta=records[0].reverse_deta if add_content in records[0].reverse_deta else records[0].reverse_deta+add_content
                 )
             elif tp != "unknown2zh" and r != content and r != "" and records.__len__() == 0:
                 models.VisitRecord.objects.create(user_id=user_id,
                                                   bkj_id=w,
                                                   time_stamp=time_stamp,
-                                                  reverse_deta=r+add_content,
+                                                  reverse_deta=r if add_content in r else r+add_content,
                                                   is_crawler=tp
                                                   )
     return render(request, 'jc/add_visit_record.html')
